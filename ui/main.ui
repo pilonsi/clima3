@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>669</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>clima3 - AEMET OpenData Analyzer</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QComboBox" name="list_stations">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>60</y>
+      <width>221</width>
+      <height>32</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="list_provinces">
+    <property name="geometry">
+     <rect>
+      <x>92</x>
+      <y>60</y>
+      <width>221</width>
+      <height>32</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_get">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>60</y>
+      <width>111</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Get</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_station">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>70</y>
+      <width>52</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Station</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_province">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Province</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_status">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>30</y>
+      <width>671</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_statusmsg">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>651</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Idle</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="label_status_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>39</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Status</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="graph_temperature" native="true">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>150</y>
+      <width>741</width>
+      <height>191</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="graph_tsd_tendency" native="true">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>380</y>
+      <width>741</width>
+      <height>191</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_tsd">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>360</y>
+      <width>231</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Time Series Decomposition: Tendency</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_temperature">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>130</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Temperature</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>801</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

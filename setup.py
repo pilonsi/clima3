@@ -7,5 +7,5 @@ setup(name='clima3',
       author_email='jfabregat@protonmail.com',
       url='https://github.com/pilonsi/clima3',
       packages=['clima3'],
-      install_requires=[]
+      install_requires=['requests']
 )
