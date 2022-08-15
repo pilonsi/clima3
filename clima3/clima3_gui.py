@@ -25,6 +25,7 @@ class Window(object):
     self.app = QtWidgets.QApplication(sys.argv)
 
     self.window = uic.loadUi('../ui/main.ui')
+    self.window.button_get.clicked.connect(self.get_and_process_data)
     self.window.button_get.setEnabled(False)
     self.window.show()
 
@@ -32,14 +33,7 @@ class Window(object):
     self.app.exec()
 
   def msg(self, text):
-    self.window.label_statusmsg.clear()
-    self.window.label_statusmsg.setStyleSheet("color: black;")
-    self.window.label_statusmsg.setText(text)
-
-  def error_msg(self, text):  
-    self.window.label_statusmsg.clear()
-    self.window.label_statusmsg.setStyleSheet("color: red;")
-    self.window.label_statusmsg.setText(text)
+    self.window.statusbar.showMessage(text)
 
   def generate_province_sel_menu(self):
     self.msg('Getting station info from AEMET')
@@ -60,3 +54,14 @@ class Window(object):
     self.window.list_stations.clear()
     for s in self.stations[str(self.window.list_provinces.currentText())].keys():
       self.window.list_stations.addItem(s)
+
+  def get_and_process_data(self):
+    self.msg('Getting data from AEMET')
+    indicative = self.stations[str(self.window.list_provinces.currentText())][str(self.window.list_stations.currentText())]
+    date_from = self.window.date_from.dateTime().toMSecsSinceEpoch()
+    date_to = self.window.date_to.dateTime().toMSecsSinceEpoch()
+    data = clima3_aemet.get_station_data(indicative, date_from, date_to)
+    print(data)
+    self.msg('Idle')
+    
+    
