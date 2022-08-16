@@ -18,6 +18,7 @@
 
 import requests
 import datetime
+import pandas
 import math
 import time
 import clima3_gui
@@ -73,6 +74,8 @@ def get_station_data(indicative, date_from, date_to):
   urls = get_data_urls(indicative, dates)
   data = get_data(urls)
   data = clean_data(data)
+  data = pandas.DataFrame(data=data)
+  data.set_index('fecha', inplace=True)
 
   return data
 

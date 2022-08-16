@@ -20,6 +20,7 @@ import sys
 from PyQt6 import QtWidgets, uic
 from pyqtgraph import PlotWidget
 import pyqtgraph
+import pandas
 import clima3_aemet
 import libclima3
 
@@ -31,6 +32,7 @@ class Window(object):
     self.window.button_get.clicked.connect(self.get_and_process_data)
     self.window.button_get.setEnabled(False)
     self.window.graph_temperature.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
+    self.window.graph_tsd_trend.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
     self.window.show()
 
   def enter_exec_loop(self):
@@ -65,10 +67,12 @@ class Window(object):
     date_from = self.window.date_from.dateTime().toMSecsSinceEpoch()
     date_to = self.window.date_to.dateTime().toMSecsSinceEpoch()
     data = clima3_aemet.get_station_data(indicative, date_from, date_to)
+    data = libclima3.stl(data, 'tmax')
     self.plot(self.window.graph_temperature, data, 'tmax')
+    self.plot(self.window.graph_tsd_trend, data, 'tmax_trend')
     self.msg('Idle')
     
   def plot(self, graph, data, key):
-    x = [d['fecha'].timestamp() for d in data]
-    y = [d[key] for d in data]
+    x = [d.timestamp() for d in data.index]
+    y = [d for d in data.loc[:,key]]
     graph.plot(x, y)

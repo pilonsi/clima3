@@ -16,4 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import pandas
+from statsmodels.tsa.seasonal import STL
 
+def stl(data, key):
+  result = STL(data.loc[:,key], period=365).fit()
+  data[key + '_trend'] = result.trend
+  data[key + '_seasonal'] = result.seasonal
+  data[key + '_resid'] = result.resid
+
+  return data

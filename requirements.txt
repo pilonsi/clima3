@@ -1,2 +1,3 @@
-requests
-json
+PyQt6
+pyqtgraph
+statsmodels
