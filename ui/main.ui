@@ -60,7 +60,7 @@
      <string>Province</string>
     </property>
    </widget>
-   <widget class="QWidget" name="graph_temperature" native="true">
+   <widget class="PlotWidget" name="graph_temperature" native="true">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -197,6 +197,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

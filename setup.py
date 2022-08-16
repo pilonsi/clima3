@@ -7,5 +7,5 @@ setup(name='clima3',
       author_email='jfabregat@protonmail.com',
       url='https://github.com/pilonsi/clima3',
       packages=['clima3'],
-      install_requires=['requests', 'PyQt6']
+      install_requires=['PyQt6', 'pyqtgraph']
 )

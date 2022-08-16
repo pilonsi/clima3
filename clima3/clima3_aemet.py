@@ -29,7 +29,7 @@ import clima3_gui
 # The 5 year period here is represented in milliseconds taking into account that
 # every 5 year period has a leap year. (So an extra day).
 MAX_TIMEFRAME = 157680000000
-DAY_IN_US = 86400000
+DAY_IN_MS = 86400000
 
 # TODO Temporary solution. Should be loaded from a config file.
 HOSTNAME = 'https://opendata.aemet.es/opendata'
@@ -72,6 +72,7 @@ def get_station_data(indicative, date_from, date_to):
   dates = generate_dates(date_from, date_to)
   urls = get_data_urls(indicative, dates)
   data = get_data(urls)
+  data = clean_data(data)
 
   return data
 
@@ -82,7 +83,7 @@ def generate_dates(date_from, date_to):
 
   s_from = date_from;
   # If only 1 iteration add the remaining time unless the division is exact by less than 1 day
-  if timeframes <= 1 and last_timeframe >= DAY_IN_US:
+  if timeframes <= 1 and last_timeframe >= DAY_IN_MS:
     s_to = s_from + last_timeframe
   else:
     s_to = s_from + MAX_TIMEFRAME
@@ -97,12 +98,12 @@ def generate_dates(date_from, date_to):
     print('[generate_dates]: Split ' + str(i) + ': ' + dates[i]['ini'] + ' to ' + dates[i]['fin'])
 
     if i == 0:
-      s_from = s_from + MAX_TIMEFRAME + DAY_IN_US
+      s_from = s_from + MAX_TIMEFRAME + DAY_IN_MS
     else:
       s_from = s_from + MAX_TIMEFRAME
 
     # When preparing for the last iteration only add the remaining time unless the division is exact by less than 1 day
-    if i == timeframes - 2 and last_timeframe >= DAY_IN_US:
+    if i == timeframes - 2 and last_timeframe >= DAY_IN_MS:
       s_to = s_to + last_timeframe
     else:
       s_to = s_to + MAX_TIMEFRAME
@@ -145,4 +146,27 @@ def get_data(urls):
 
     data = data + s_data
 
+  return data
+
+def clean_data(data):
+  for d in data:
+    d = retype_to_datetime(d, 'fecha')
+    d = retype_to_float(d, 'prec')
+    d = retype_to_float(d, 'tmax')
+    d = retype_to_float(d, 'tmed')
+    d = retype_to_float(d, 'tmin')
+
+  return data
+
+def retype_to_float(data, key):
+  try:
+    data[key] = float(data[key].replace(',', '.'))
+  except:
+    print('[retype_to_float]: Missing data point')
+    data[key] = 0.0
+
+  return data
+
+def retype_to_datetime(data, key):
+  data[key] = datetime.datetime.strptime(data[key], '%Y-%m-%d')
   return data
