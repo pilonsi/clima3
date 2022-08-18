@@ -76,6 +76,9 @@ def get_station_data(indicative, date_from, date_to):
   data = clean_data(data)
   data = pandas.DataFrame(data=data)
   data.set_index('fecha', inplace=True)
+  data.index = pandas.to_datetime(data.index)
+  idx = pandas.date_range(min(data.index), max(data.index))
+  data = data.reindex(idx)
 
   return data
 
@@ -153,11 +156,11 @@ def get_data(urls):
 
 def clean_data(data):
   for d in data:
-    d = retype_to_datetime(d, 'fecha')
     d = retype_to_float(d, 'prec')
     d = retype_to_float(d, 'tmax')
     d = retype_to_float(d, 'tmed')
     d = retype_to_float(d, 'tmin')
+    d = retype_to_datetime(d, 'fecha')
 
   return data
 
@@ -165,8 +168,8 @@ def retype_to_float(data, key):
   try:
     data[key] = float(data[key].replace(',', '.'))
   except:
-    print('[retype_to_float]: Missing data point')
-    data[key] = 0.0
+    print('[retype_to_float]: Missing data point: ' + data['fecha'])
+    data[key] = None
 
   return data
 

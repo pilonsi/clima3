@@ -22,7 +22,7 @@ from pyqtgraph import PlotWidget
 import pyqtgraph
 import pandas
 import clima3_aemet
-import libclima3
+import clima3_stat
 
 class Window(object):
   def __init__(self):
@@ -62,17 +62,24 @@ class Window(object):
       self.window.list_stations.addItem(s)
 
   def get_and_process_data(self):
+    # Get data from AEMET API
     self.msg('Getting data from AEMET')
     indicative = self.stations[str(self.window.list_provinces.currentText())][str(self.window.list_stations.currentText())]
     date_from = self.window.date_from.dateTime().toMSecsSinceEpoch()
     date_to = self.window.date_to.dateTime().toMSecsSinceEpoch()
     data = clima3_aemet.get_station_data(indicative, date_from, date_to)
-    data = libclima3.stl(data, 'tmax')
+
+    # Clean up received data and process it
+    data = clima3_stat.constrain_series_to_observed(data, 'tmax')
+    data = clima3_stat.stl(data, 'tmax')
+
+    # Plot graphs
     self.plot(self.window.graph_temperature, data, 'tmax')
     self.plot(self.window.graph_tsd_trend, data, 'tmax_trend')
     self.msg('Idle')
     
   def plot(self, graph, data, key):
+    graph.clear()
     x = [d.timestamp() for d in data.index]
     y = [d for d in data.loc[:,key]]
     graph.plot(x, y)
