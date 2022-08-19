@@ -18,13 +18,34 @@
 
 import pandas
 from statsmodels.tsa.seasonal import STL
-
-import datetime
+from statsmodels.tsa.seasonal import seasonal_decompose
 import os
 
 MAX_TOLERABLE_DATA_GAP = 62
 
 def stl(data, key):
+  result = STL(data[key], period=365, seasonal=37).fit()
+  data[key + '_trend'] = result.trend
+  data[key + '_seasonal'] = result.seasonal
+  data[key + '_resid'] = result.resid
+
+  return data
+
+def classical(data, key):
+  result = seasonal_decompose(data[key], 
+                              model='additive', 
+                              period=365, 
+                              extrapolate_trend='freq')
+  data[key + '_trend'] = result.trend
+  data[key + '_seasonal'] = result.seasonal
+  data[key + '_resid'] = result.resid
+
+  return data
+
+def dump(data):
+  data.to_csv(os.getcwd() + '/clima3_dump.csv')
+
+def clean_dataset(data, key):
   # Prepare the dataset
   # Constrain the dataset to regions where enough contiguous data is available
   data = clean_holes(data, key, MAX_TOLERABLE_DATA_GAP)
@@ -34,19 +55,22 @@ def stl(data, key):
   data = constrain_series_to_year(data)
   data = crop_leap_years(data)
 
-  # Interpolate missing values
-  data.interpolate(method='pchip', inplace=True)
+  return data
 
-  # Apply STL
-  result = STL(data[key], period = 365).fit()
-  data[key + '_trend'] = result.trend
-  data[key + '_seasonal'] = result.seasonal
-  data[key + '_resid'] = result.resid
-
-  # FIXME Debug feature: dump data to csv for analysis
-  data.to_csv(os.getcwd() + '/stl_dump.csv')
+def interpolate(data, key, method):
+  if method == 'Pchip':
+    data.interpolate(method='pchip', inplace=True)
+  elif method == 'Spline':
+    data.interpolate(method='spline', order=5, inplace=True)
+  elif method == 'Polynomial':
+    data.interpolate(method='polynomial', order=5, inplace=True)
+  elif method == 'Time':
+    data.interpolate(method='time', inplace=True)
+  else:
+    data.interpolate(method='linear', inplace=True)
 
   return data
+    
 
 def clean_holes(data, key, hole):
   hole_size = 0

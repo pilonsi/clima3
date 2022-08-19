@@ -27,12 +27,25 @@ import clima3_stat
 class Window(object):
   def __init__(self):
     self.app = QtWidgets.QApplication(sys.argv)
-
     self.window = uic.loadUi('../ui/main.ui')
-    self.window.button_get.clicked.connect(self.get_and_process_data)
+
+    self.window.button_get.clicked.connect(self.get_aemet_data)
     self.window.button_get.setEnabled(False)
-    self.window.graph_temperature.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
+
+    self.window.graph_data.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
     self.window.graph_tsd_trend.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
+    self.window.graph_tsd_seasonal.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
+    self.window.graph_tsd_remainder.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
+
+    
+    self.window.list_decomps.addItem('STL')
+    self.window.list_decomps.addItem('Classical')
+    self.window.list_interps.addItem('Pchip')
+    self.window.list_interps.addItem('Spline')
+    self.window.list_interps.addItem('Polynomial')
+    self.window.list_interps.addItem('Time')
+    self.window.list_interps.addItem('Linear')
+
     self.window.show()
 
   def enter_exec_loop(self):
@@ -42,7 +55,6 @@ class Window(object):
     self.window.statusbar.showMessage(text)
 
   def generate_province_sel_menu(self):
-    self.msg('Getting station info from AEMET')
     self.stations = clima3_aemet.get_station_list()
     self.stations = clima3_aemet.compile_station_list(self.stations)
 
@@ -54,29 +66,63 @@ class Window(object):
     self.window.list_provinces.currentTextChanged.connect(self.update_station_sel_menu)
 
     self.window.button_get.setEnabled(True)
-    self.msg('Idle')
 
   def update_station_sel_menu(self):
     self.window.list_stations.clear()
     for s in self.stations[str(self.window.list_provinces.currentText())].keys():
       self.window.list_stations.addItem(s)
 
-  def get_and_process_data(self):
+  def generate_variable_sel_menu(self):
+    self.window.list_variables.clear()
+    for v in self.data.columns:
+      self.window.list_variables.addItem(v)
+
+    self.window.list_variables.currentTextChanged.connect(self.process_data)
+    self.window.list_decomps.currentTextChanged.connect(self.process_data)
+    self.window.list_interps.currentTextChanged.connect(self.process_data)
+
+  def get_aemet_data(self):
     # Get data from AEMET API
-    self.msg('Getting data from AEMET')
     indicative = self.stations[str(self.window.list_provinces.currentText())][str(self.window.list_stations.currentText())]
     date_from = self.window.date_from.dateTime().toMSecsSinceEpoch()
     date_to = self.window.date_to.dateTime().toMSecsSinceEpoch()
-    data = clima3_aemet.get_station_data(indicative, date_from, date_to)
+    self.data = clima3_aemet.get_station_data(indicative, date_from, date_to)
+    self.generate_variable_sel_menu()
+    self.process_data()
 
+  def process_data(self):
+    if self.window.list_decomps.currentText() == 'STL':
+      self.process_data_stl(self.data)
+    else:
+      self.process_data_classical(self.data)
+
+  def process_data_classical(self, data):
     # Clean up received data and process it
-    data = clima3_stat.constrain_series_to_observed(data, 'tmax')
-    data = clima3_stat.stl(data, 'tmax')
+    variable = self.window.list_variables.currentText()
+    interp = self.window.list_interps.currentText()
+    data = clima3_stat.constrain_series_to_observed(data, variable)
+    data = clima3_stat.clean_dataset(data, variable)
+    data = clima3_stat.interpolate(data, variable, interp)
+    data = clima3_stat.classical(data, variable)
+    self.update_graphs(data, variable)
 
-    # Plot graphs
-    self.plot(self.window.graph_temperature, data, 'tmax')
-    self.plot(self.window.graph_tsd_trend, data, 'tmax_trend')
-    self.msg('Idle')
+  def process_data_stl(self, data):
+    # Clean up received data and process it
+    variable = self.window.list_variables.currentText()
+    interp = self.window.list_interps.currentText()
+    data = clima3_stat.constrain_series_to_observed(data, variable)
+    data = clima3_stat.clean_dataset(data, variable)
+    data = clima3_stat.interpolate(data, variable, interp)
+    data = clima3_stat.stl(data, variable)
+    self.update_graphs(data, variable)
+
+
+  def update_graphs(self, data, key):
+    self.plot(self.window.graph_data, data, key)
+    self.plot(self.window.graph_tsd_trend, data, key + '_trend')
+    self.plot(self.window.graph_tsd_seasonal, data, key + '_seasonal')
+    self.plot(self.window.graph_tsd_remainder, data, key + '_resid')
+    
     
   def plot(self, graph, data, key):
     graph.clear()

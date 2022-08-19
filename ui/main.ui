@@ -6,193 +6,447 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>801</width>
-    <height>591</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>clima3 - AEMET OpenData Analyzer</string>
   </property>
+  <property name="locale">
+   <locale language="C" country="AnyTerritory"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QComboBox" name="list_stations">
-    <property name="geometry">
-     <rect>
-      <x>302</x>
-      <y>10</y>
-      <width>161</width>
-      <height>32</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="list_provinces">
-    <property name="geometry">
-     <rect>
-      <x>92</x>
-      <y>10</y>
-      <width>161</width>
-      <height>32</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_station">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>14</y>
-      <width>52</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Station</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_province">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>16</y>
-      <width>51</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Province</string>
-    </property>
-   </widget>
-   <widget class="PlotWidget" name="graph_temperature" native="true">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>90</y>
-      <width>741</width>
-      <height>191</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="PlotWidget" name="graph_tsd_trend" native="true">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>320</y>
-      <width>741</width>
-      <height>191</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_tsd">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>300</y>
-      <width>211</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Time Series Decomposition: Trend</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_temperature">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>70</y>
-      <width>81</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Temperature</string>
-    </property>
-   </widget>
-   <widget class="QDateEdit" name="date_from">
-    <property name="geometry">
-     <rect>
-      <x>472</x>
-      <y>14</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="displayFormat">
-     <string>d/M/yyyy</string>
-    </property>
-    <property name="calendarPopup">
-     <bool>false</bool>
-    </property>
-    <property name="date">
-     <date>
-      <year>1961</year>
-      <month>1</month>
-      <day>1</day>
-     </date>
-    </property>
-   </widget>
-   <widget class="QDateEdit" name="date_to">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>14</y>
-      <width>81</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="displayFormat">
-     <string>d/M/yyyy</string>
-    </property>
-    <property name="calendarPopup">
-     <bool>false</bool>
-    </property>
-    <property name="date">
-     <date>
-      <year>2021</year>
-      <month>12</month>
-      <day>31</day>
-     </date>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_to">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>14</y>
-      <width>21</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>To</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_get">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>10</y>
-      <width>81</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Get</string>
-    </property>
-    <property name="flat">
-     <bool>false</bool>
-    </property>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label_province">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Province</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="list_provinces">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_station">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Station</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="list_stations">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="date_from">
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="dateTime">
+            <datetime>
+             <hour>0</hour>
+             <minute>0</minute>
+             <second>0</second>
+             <year>1961</year>
+             <month>1</month>
+             <day>1</day>
+            </datetime>
+           </property>
+           <property name="displayFormat">
+            <string>M/d/yyyy</string>
+           </property>
+           <property name="date">
+            <date>
+             <year>1961</year>
+             <month>1</month>
+             <day>1</day>
+            </date>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_to">
+           <property name="maximumSize">
+            <size>
+             <width>16</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>To</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDateEdit" name="date_to">
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="dateTime">
+            <datetime>
+             <hour>0</hour>
+             <minute>0</minute>
+             <second>0</second>
+             <year>2021</year>
+             <month>12</month>
+             <day>31</day>
+            </datetime>
+           </property>
+           <property name="displayFormat">
+            <string>M/d/yyyy</string>
+           </property>
+           <property name="date">
+            <date>
+             <year>2021</year>
+             <month>12</month>
+             <day>31</day>
+            </date>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="button_get">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Get</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_variable">
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Variable</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="list_variables"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_decomposition">
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Decomposition</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="list_decomps">
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_interpolation">
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+           <property name="text">
+            <string>Interpolation</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="list_interps">
+           <property name="locale">
+            <locale language="C" country="AnyTerritory"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="locale">
+       <locale language="C" country="AnyTerritory"/>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>774</width>
+         <height>864</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="7" column="0">
+         <widget class="PlotWidget" name="graph_tsd_remainder" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_seasonal_comp">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Seasonal Component</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_data">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="locale">
+           <locale language="C" country="AnyTerritory"/>
+          </property>
+          <property name="text">
+           <string>Data</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="PlotWidget" name="graph_tsd_trend" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="PlotWidget" name="graph_data" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_remainder_comp">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Remainder Component</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_trend_comp">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Trend Component</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="PlotWidget" name="graph_tsd_seasonal" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>180</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>15</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>801</width>
+     <width>800</width>
      <height>22</height>
     </rect>
-   </property>
-   <property name="nativeMenuBar">
-    <bool>true</bool>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

@@ -155,20 +155,36 @@ def get_data(urls):
   return data
 
 def clean_data(data):
+  # Convert relevant data to their correct datetype and delete non-relevant columns
   for d in data:
     d = retype_to_float(d, 'prec')
     d = retype_to_float(d, 'tmax')
     d = retype_to_float(d, 'tmed')
     d = retype_to_float(d, 'tmin')
+    d = retype_to_float(d, 'sol')
     d = retype_to_datetime(d, 'fecha')
-
+    d.pop('altitud', None)
+    d.pop('indicativo', None)
+    d.pop('provincia', None)
+    d.pop('nombre', None)
+    d.pop('horatmin', None)
+    d.pop('horatmax', None)
+    d.pop('dir', None)
+    d.pop('velmedia', None)
+    d.pop('racha', None)
+    d.pop('horaracha', None)
+    d.pop('presMax', None)
+    d.pop('horaPresMax', None)
+    d.pop('presMin', None)
+    d.pop('horaPresMin', None)
+    
   return data
 
 def retype_to_float(data, key):
   try:
     data[key] = float(data[key].replace(',', '.'))
   except:
-    print('[retype_to_float]: Missing data point: ' + data['fecha'])
+    print('[retype_to_float]: Missing data point for ' + key + ' at ' + data['fecha'])
     data[key] = None
 
   return data
