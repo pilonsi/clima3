@@ -5,7 +5,7 @@ Clima3 is a climate data visualization tool using the data provided by the
 OpenData API and processing it to extract the trend for any user-selectable period,
 variable, and station.
 
-The data is requested to the AEMET servers and is then processed, cleaned and holes,
+The data is requested to the AEMET servers and is then processed, cleaned, and holes,
 if tolerable, are interpolated. Then a time series decomposition is applied (STL or
 classical additive) to extract the trend, seasonal and remainder components. See 
 below for more details on data handling and processing.
@@ -84,8 +84,8 @@ to appear in the remainder component. [2]
 
  ## Installation
 Clone this repository and, in the source folder, run ```python3 -m pip install -r requirements.txt```
-to install the required libraries. The minimum Python version is 3.7 as it is the older version
-supported by PyQt6.
+to install the required libraries. The minimum supported Python version is 3.7 as it is the
+older version supported by PyQt6.
 
 Once installed run ```python3 ./clima3/clima3.py```
 
