@@ -79,18 +79,18 @@ decomposition is configured with 2 passes of the inner loop and 10 of the outer 
 to add robustness iterations. For the sun data, the seasonal smoother is set to the same
 value of 35 used for temperature since they have a similar seasonal pattern. The precipitation
 data does not follow such a consistent pattern and as such, the seasonal smoother is set to 7,
-the minimum recommended value, because if set to any higher value seasonal oscillations start
-to appear in the remainder component. [2]
+the minimum recommended in the original paper, because any higher value causes seasonal
+oscillations to appear in the remainder component. [2]
 
  ## Installation
-Clone this repository and, in the source folder, run ```python3 -m pip install -r requirements.txt```
+Clone this repository and in the source folder run ```python3 -m pip install -r requirements.txt```
 to install the required libraries. The minimum supported Python version is 3.7 as it is the
 older version supported by PyQt6.
 
 Once installed run ```python3 ./clima3/clima3.py```
 
 In future revisions multithreading should be implemented to make the interface responsive while
-data is being gotten from AEMET. From the time being it is recommended to check the status 
+data is being gotten from AEMET. For the time being it is recommended to check the status 
 messages printed to stdout.
 
  ## References
