@@ -1,7 +1,7 @@
  # AEMET OpenData Analysis Tool
 
 Clima3 is a climate data visualization tool using the data provided by the 
-[AEMET](https://www.aemet.es/en/portada) (Spanish Meteorological Association) 
+[AEMET](https://www.aemet.es/en/portada) (Spanish State Meteorological Agency)
 OpenData API and processing it to extract the trend for any user-selectable period,
 variable, and station.
 
