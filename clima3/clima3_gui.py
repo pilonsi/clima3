@@ -46,6 +46,8 @@ class Window(object):
     self.window.list_interps.addItem('Quadratic')
     self.window.list_interps.addItem('Linear')
 
+    self.window.statusbar.showMessage('Source: AEMET')
+
     self.window.show()
 
   def enter_exec_loop(self):
