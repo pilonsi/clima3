@@ -23,8 +23,11 @@ import os
 
 MAX_TOLERABLE_DATA_GAP = 62
 
-def stl(data, key):
-  result = STL(data[key], period=365, seasonal=37).fit()
+def stl(data, key, seasonal=None, trend=None, inner_iter=5, outer_iter=0):
+  result = STL(data[key], 
+               period=365, 
+               seasonal=seasonal,
+               trend=trend).fit(inner_iter=inner_iter, outer_iter=outer_iter)
   data[key + '_trend'] = result.trend
   data[key + '_seasonal'] = result.seasonal
   data[key + '_resid'] = result.resid
@@ -60,12 +63,14 @@ def clean_dataset(data, key):
 def interpolate(data, key, method):
   if method == 'Pchip':
     data.interpolate(method='pchip', inplace=True)
-  elif method == 'Spline':
-    data.interpolate(method='spline', order=5, inplace=True)
-  elif method == 'Polynomial':
-    data.interpolate(method='polynomial', order=5, inplace=True)
-  elif method == 'Time':
-    data.interpolate(method='time', inplace=True)
+  elif method == 'Akima':
+    data.interpolate(method='akima', inplace=True)
+  elif method == 'Cubic Spline':
+    data.interpolate(method='spline', order=3, inplace=True)
+  elif method == 'Cubic':
+    data.interpolate(method='cubic', inplace=True)
+  elif method == 'Quadratic' :
+    data.interpolate(method='quadratic', inplace=True)
   else:
     data.interpolate(method='linear', inplace=True)
 
@@ -123,7 +128,3 @@ def constrain_series_to_observed(data, key):
       break
   
   return data
-
-def interpolate_missing(data, key):
-
-  return data 

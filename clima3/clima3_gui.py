@@ -36,14 +36,14 @@ class Window(object):
     self.window.graph_tsd_trend.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
     self.window.graph_tsd_seasonal.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
     self.window.graph_tsd_remainder.setAxisItems({'bottom': pyqtgraph.DateAxisItem()})
-
     
     self.window.list_decomps.addItem('STL')
     self.window.list_decomps.addItem('Classical')
     self.window.list_interps.addItem('Pchip')
-    self.window.list_interps.addItem('Spline')
-    self.window.list_interps.addItem('Polynomial')
-    self.window.list_interps.addItem('Time')
+    self.window.list_interps.addItem('Akima')
+    self.window.list_interps.addItem('Cubic Spline')
+    self.window.list_interps.addItem('Cubic')
+    self.window.list_interps.addItem('Quadratic')
     self.window.list_interps.addItem('Linear')
 
     self.window.show()
@@ -92,7 +92,13 @@ class Window(object):
 
   def process_data(self):
     if self.window.list_decomps.currentText() == 'STL':
-      self.process_data_stl(self.data)
+      if self.window.list_variables.currentText() == 'prec':
+        self.process_data_stl(self.data, seasonal=7, inner_iter=2, outer_iter=10)
+      elif self.window.list_variables.currentText() == 'sol':
+        self.process_data_stl(self.data, seasonal=35)
+      else:
+        self.process_data_stl(self.data, seasonal=35, inner_iter=2, outer_iter=10)
+
     else:
       self.process_data_classical(self.data)
 
@@ -106,14 +112,18 @@ class Window(object):
     data = clima3_stat.classical(data, variable)
     self.update_graphs(data, variable)
 
-  def process_data_stl(self, data):
+  def process_data_stl(self, data, seasonal=None, trend=None, inner_iter=5, outer_iter=0):
     # Clean up received data and process it
     variable = self.window.list_variables.currentText()
     interp = self.window.list_interps.currentText()
     data = clima3_stat.constrain_series_to_observed(data, variable)
     data = clima3_stat.clean_dataset(data, variable)
     data = clima3_stat.interpolate(data, variable, interp)
-    data = clima3_stat.stl(data, variable)
+    data = clima3_stat.stl(data, variable, 
+                           seasonal=seasonal,
+                           trend=trend, 
+                           inner_iter=inner_iter, 
+                           outer_iter=outer_iter)
     self.update_graphs(data, variable)
 
 
